@@ -156,19 +156,23 @@ trait HeapProperties(val heapInterface: HeapInterface):
       val meldedHeap: List[Node] = meld(heap1, heap2)
       var result = false
 
+
       if isEmpty(heap1) && isEmpty(heap2) then
          result = isEmpty(meldedHeap)
+
       else if isEmpty(heap1) then
         val min2: Int = findMin(heap2)
         val minMeld: Int = findMin(meldedHeap)
         val nextHeap2 = deleteMin(heap2)
         result = ((min2 == minMeld) && checkDeletingOperation(heap2, nextHeap2, min2) && check(heap1, nextHeap2))
+
       else if isEmpty(heap2) then
         val min1: Int = findMin(heap1)
         val minMeld: Int = findMin(meldedHeap)
         val nextHeap1 = deleteMin(heap1)
         result = ((min1 == minMeld) && checkDeletingOperation(heap1, nextHeap1, min1) && check(nextHeap1, heap2))
-      else
+
+      else if !isEmpty(heap1) && !isEmpty(heap2) then
         var nextHeap1: List[Node] = heap1
         var nextHeap2: List[Node] = heap2
         var checked:   Boolean    = false
@@ -191,7 +195,6 @@ trait HeapProperties(val heapInterface: HeapInterface):
 
     "finding the minimum of melding any two heaps should return the minimum of one or the other of the source heaps" ->
     forAll { (heap1: List[Node], heap2: List[Node]) =>
-//      printf("start\n")
       check(heap1, heap2)
     }
 
